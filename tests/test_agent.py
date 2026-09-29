@@ -124,7 +124,7 @@ async def test_refuses_harmful_request() -> None:
 async def test_business_information_tool() -> None:
     """The business tool returns official service information."""
 
-    response = await Assistant().get_business_information(
+    response = await Assistant(llm_model=None).get_business_information(
         None,
         "services",
     )
@@ -173,7 +173,11 @@ async def test_capture_customer_request_tool() -> None:
     """The lead tool persists one normalized customer request."""
 
     store = InMemoryConsultationRequestStore()
-    assistant = Assistant(request_store=store, session_id="room-123")
+    assistant = Assistant(
+        request_store=store,
+        session_id="room-123",
+        llm_model=None,
+    )
 
     response = await assistant.capture_customer_request(
         None,
@@ -191,7 +195,11 @@ async def test_capture_customer_request_is_idempotent() -> None:
     """A tool retry acknowledges the existing record instead of duplicating it."""
 
     store = InMemoryConsultationRequestStore()
-    assistant = Assistant(request_store=store, session_id="room-123")
+    assistant = Assistant(
+        request_store=store,
+        session_id="room-123",
+        llm_model=None,
+    )
 
     first = await assistant.capture_customer_request(
         None,
@@ -251,7 +259,7 @@ async def test_agent_captures_complete_request() -> None:
 async def test_consultation_availability_tool() -> None:
     """The availability tool returns the demo schedule."""
 
-    response = await Assistant().check_consultation_availability(
+    response = await Assistant(llm_model=None).check_consultation_availability(
         None,
         "Monday",
     )
